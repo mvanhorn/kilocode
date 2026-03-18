@@ -250,10 +250,12 @@ export const RunCommand = cmd({
           describe: "fork the session before continuing (requires --continue or --session)",
           type: "boolean",
         })
+        // kilocode_change start
         .option("cloud-fork", {
           describe: "fetch session from cloud and continue locally (requires --session)",
           type: "boolean",
         })
+        // kilocode_change end
         .option("share", {
           type: "boolean",
           describe: "share the session",
@@ -287,6 +289,11 @@ export const RunCommand = cmd({
           type: "string",
           describe: "attach to a running opencode server (e.g., http://localhost:4096)",
         })
+        .option("password", {
+          alias: ["p"],
+          type: "string",
+          describe: "basic auth password (defaults to OPENCODE_SERVER_PASSWORD)",
+        })
         .option("dir", {
           type: "string",
           describe: "directory to run in, path on remote server if attaching",
@@ -310,8 +317,8 @@ export const RunCommand = cmd({
           describe: "auto-approve all permissions (for autonomous/pipeline usage)",
           default: false,
         })
+        // kilocode_change end
     )
-    // kilocode_change end
   },
   handler: async (args) => {
     let message = [...args.message, ...(args["--"] || [])]
@@ -693,7 +700,14 @@ export const RunCommand = cmd({
     }
 
     if (args.attach) {
-      const sdk = createKiloClient({ baseUrl: args.attach, directory })
+      const headers = (() => {
+        const password = args.password ?? process.env.KILO_SERVER_PASSWORD
+        if (!password) return undefined
+        const username = process.env.KILO_SERVER_USERNAME ?? "kilo"
+        const auth = `Basic ${Buffer.from(`${username}:${password}`).toString("base64")}`
+        return { Authorization: auth }
+      })()
+      const sdk = createKiloClient({ baseUrl: args.attach, directory, headers })
       return await execute(sdk)
     }
 

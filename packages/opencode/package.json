@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
-  "version": "7.0.49",
+  "version": "7.0.50",
   "name": "@kilocode/cli",
   "type": "module",
   "license": "MIT",
@@ -19,8 +19,7 @@
     "db": "bun drizzle-kit"
   },
   "bin": {
-    "kilo": "./bin/kilo",
-    "kilocode": "./bin/kilo"
+    "opencode": "./bin/opencode"
   },
   "randomField": "this-is-a-random-value-12345",
   "exports": {
