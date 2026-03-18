@@ -27,7 +27,7 @@ The Agent Manager is a dedicated panel for running, supervising, and orchestrati
 {% tab label="New Extension" %}
 
 - Install/update the Kilo Code CLI (latest) — see [CLI setup](/docs/code-with-ai/platforms/cli)
-- Open a project in VS Code (workspace required)
+- Open a `git` enabled project in VS Code (workspace required)
 - Authentication: You must be logged in via the extension settings OR use CLI with kilocode as provider (see [Authentication Requirements](#authentication-requirements))
 
 {% /tab %}
@@ -67,9 +67,6 @@ The Agent Manager is a dedicated panel for running, supervising, and orchestrati
 - Send follow-up messages to the running agent at any time
 - Approvals: If the agent asks to use a tool, run a command, launch the browser, or connect to an MCP server, the UI shows an approval prompt
   - Approve or reject, optionally adding a short note
-- Cancel vs Stop:
-  - Cancel sends a structured cancel message (clean cooperative stop)
-  - Stop force-terminates the underlying CLI process, updating status to "stopped"
 
 {% /tab %}
 {% /tabs %}
@@ -88,7 +85,6 @@ You can continue a session later (local or remote) on both extensions.
 {% /tab %}
 {% tab label="New Extension" %}
 
-- If a session is not currently running, the Agent Manager spawns a new CLI process attached to that session's ID
 - Labels from the original session are preserved whenever possible
 - Your first follow-up message becomes the continuation input
 - You can also fork an existing session to create a new branch of exploration, or promote a session to become the active working session
@@ -109,7 +105,7 @@ Parallel Mode runs the agent in an isolated Git worktree branch, keeping your ma
 
 ### Worktree Location
 
-Worktrees are created in `.kilocode/worktrees/` within your project directory, automatically excluded from git via `.git/info/exclude`.
+Worktrees are created in `.kilo/worktrees/` within your project directory, automatically excluded from git via `.git/info/exclude`.
 
 ### After Completion
 
@@ -285,7 +281,6 @@ Message transcripts are fetched from a signed blob and exclude internal checkpoi
   - If using BYOK, session syncing is not available — switch to Kilo Code provider or sign in through the extension
 - Authentication errors
   - Verify you're logged in via extension settings or using CLI with kilocode provider
-  - BYOK configurations do not support Agent Manager authentication
 
 {% /tab %}
 {% /tabs %}

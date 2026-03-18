@@ -11,7 +11,7 @@ Model Context Protocol (MCP) extends Kilo Code's capabilities by connecting to e
 MCP servers add to your context, so be careful with which ones you enable. Certain MCP servers with many tools can quickly add up and exceed the context limit. If you're not using MCP, turn it off to significantly cut down the size of the system prompt and improve performance.
 {% /callout %}
 
-{% youtube url="https://youtu.be/6O9RQoQRX8A" caption="Demostrating MCP installation in Kilo Code" /%}
+{% youtube url="https://youtu.be/6O9RQoQRX8A" caption="Demonstrating MCP installation in Kilo Code" /%}
 
 ## Configuration Location
 
