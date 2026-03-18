@@ -36,16 +36,15 @@ import { checksum } from "@opencode-ai/util/encode"
 import { Tooltip } from "./tooltip"
 import { IconButton } from "./icon-button"
 import { TextShimmer } from "@opencode-ai/ui/text-shimmer"
-import { list } from "@opencode-ai/ui/text-utils"
-import { GrowBox } from "@opencode-ai/ui/grow-box"
-import { COLLAPSIBLE_SPRING } from "@opencode-ai/ui/motion"
-import { busy, createThrottledValue, useToolFade, useContextToolPending } from "@opencode-ai/ui/tool-utils"
+import { GrowBox } from "./grow-box"
+import { COLLAPSIBLE_SPRING } from "./motion"
+import { busy, createThrottledValue, useToolFade, useContextToolPending } from "./tool-utils"
 import {
   ContextToolGroupHeader,
   ContextToolExpandedList,
   ContextToolRollingResults,
-} from "@opencode-ai/ui/context-tool-results"
-import { ShellRollingResults } from "@opencode-ai/ui/shell-rolling-results"
+} from "./context-tool-results"
+import { ShellRollingResults } from "./shell-rolling-results"
 import { extractFilePathFromHref } from "../file-path"
 
 // Windows CLI tools (e.g. winget) use \r to overwrite progress bars in-place.
@@ -281,6 +280,11 @@ function urls(text: string | undefined) {
 const CONTEXT_GROUP_TOOLS = new Set(["read", "glob", "grep", "list"])
 const HIDDEN_TOOLS = new Set(["todowrite", "todoread"])
 
+function list<T>(value: T[] | undefined | null, fallback: T[]) {
+  if (Array.isArray(value)) return value
+  return fallback
+}
+
 function createGroupOpenState() {
   const [state, setState] = createStore<Record<string, boolean>>({})
   const read = (key?: string, collapse?: boolean) => {
@@ -336,8 +340,8 @@ function PartGrow(props: {
   grow?: boolean
   watch?: boolean
   open?: boolean
-  spring?: import("@opencode-ai/ui/motion").SpringConfig
-  toggleSpring?: import("@opencode-ai/ui/motion").SpringConfig
+  spring?: import("./motion").SpringConfig
+  toggleSpring?: import("./motion").SpringConfig
 }) {
   return (
     <GrowBox
