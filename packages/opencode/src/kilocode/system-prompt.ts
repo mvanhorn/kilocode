@@ -1,6 +1,7 @@
 // kilocode_change - new file
 
 import { Global } from "@opencode-ai/core/global"
+import { InstallationVersion } from "@opencode-ai/core/installation/version"
 import { Effect } from "effect"
 import { staticEnvLines, type EditorContext } from "@/kilocode/editor-context"
 import { KiloMemory } from "@kilocode/kilo-memory/effect"
@@ -23,6 +24,7 @@ export namespace KilocodeSystemPrompt {
         `You are powered by the model named ${input.model.api.id}. The exact model ID is ${input.model.providerID}/${input.model.api.id}`,
         `Here is some useful information about the environment you are running in:`,
         `<env>`,
+        `  Kilo version: ${InstallationVersion}`,
         `  Is directory a git repo: ${input.ctx.project.vcs === "git" ? "yes" : "no"}`,
         `  Platform: ${process.platform}`,
         `  Today's date: ${new Date().toDateString()}`,

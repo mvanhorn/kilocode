@@ -1,6 +1,9 @@
 import { describe, expect, test } from "bun:test"
+import { InstallationVersion } from "@opencode-ai/core/installation/version"
+import { ProjectV2 } from "@opencode-ai/core/project"
 import { SystemPrompt } from "../../src/session/system"
 import { environmentDetails } from "../../src/kilocode/editor-context"
+import { KilocodeSystemPrompt } from "../../src/kilocode/system-prompt"
 import { ProviderTest } from "../fake/provider"
 
 import PROMPT_ANTHROPIC from "../../src/session/prompt/anthropic.txt"
@@ -140,5 +143,32 @@ describe("environmentDetails", () => {
     expect(result).toContain("Working directory: /repo/.kilo/worktrees/feature")
     expect(result).toContain("Workspace root folder: /repo/.kilo/worktrees/feature")
     expect(result).toContain("Active file: src/app.ts")
+  })
+})
+
+describe("KilocodeSystemPrompt.environment", () => {
+  test("includes the installed Kilo version with existing environment context", () => {
+    const model = ProviderTest.model({ providerID: "test-provider" })
+    const result = KilocodeSystemPrompt.environment({
+      model,
+      ctx: {
+        directory: "/repo",
+        worktree: "/repo",
+        project: {
+          id: ProjectV2.ID.make("project"),
+          worktree: "/repo",
+          vcs: "git",
+          time: { created: 0, updated: 0 },
+          sandboxes: [],
+        },
+      },
+    }).join("\n")
+
+    expect(InstallationVersion).toBe("local")
+    expect(result).toContain(`  Kilo version: ${InstallationVersion}`)
+    expect(result).toContain("You are powered by the model named gpt-5.2. The exact model ID is test-provider/gpt-5.2")
+    expect(result).toContain(
+      "Project config: .kilo/command/*.md, .kilo/agent/*.md, kilo.json, AGENTS.md. Put new commands and agents in .kilo/. Do not use .kilocode/ or .opencode/.",
+    )
   })
 })
